@@ -46,26 +46,17 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 
 ---
 <!-- class: default -->
-## SPAの特徴
-
+<!-- _footer: 引用元:[https://miyach.in/programming/spa-basis/] -->
 #### 従来のWebアプリケーションのフロー
 
-1. ユーザーがUI上でアクションを起こす
-2. サーバーへ送信
-3. サーバーが受け取り遷移先のHTMLを送信
-4. サーバーからHTMLを受け取り画面遷移
+![bg 100%](https://miyach.in/wp-content/uploads/2019/02/612f43071a2a0f44423b8bcb86c93e1a-1024x455.png)
 
 ---
 <!-- class: default -->
-
-# SPAの特徴
-
+<!-- _footer: 引用元:[https://miyach.in/programming/spa-basis/] -->
 #### SPAのフロー
 
-1. ユーザーがUI上でアクションを起こす
-2. アクションに必要なデータのみをサーバーから要求
-3. 返却値(JSON形式)をもとに処理
-4. 差分があった一部を更新
+![bg 100%](https://miyach.in/wp-content/uploads/2019/02/7fb8f1c748d490339c64aa37f2515920-1024x455.png)
 
 ---
 <!-- class: lead -->
@@ -83,8 +74,12 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 ## Reactの特徴
 
 - 宣言的なView
+  - データによって構造が崩れにくい
+  - 仮想DOMを用いての差分を再描画
+  - JSX記法が使える
 - コンポーネントベース
-- どこでも使える
+  - HTML, CSS, JavaScriptをコンポーネントとして管理
+  - 構造がわかりやすい
 
 ---
 <!-- class: lead -->
@@ -96,8 +91,8 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 ## Reduxとは
 
 - Reactが扱うUIの状態を管理するフレームワーク
-- Reducer + Flux = Redux
-- Reduce → 整理して変換する
+- Redux → Reducer + Flux
+- Reduce → **整理して変換する**
 
 ---
 <!-- class: default -->
@@ -105,52 +100,62 @@ backgroundImage: url('https://marp.app/assets/hero-background.jpg')
 
 - ActionCreator
 - Action
+- Reducer
 - Store
 - State
-- Reducer
 
 ---
 <!-- class: default -->
+### ActionCreator
+  - Actionを作成する関数
+```js
+  import { createAction } from 'redux-actions';
+  export const setUserName = createAction(SET_USER_DATA);
+```
 
-## Reduxの要素
-
-- ActionCreator
-- Action
-
+### Action
+  - 処理を行うための情報を持ったオブジェクト
 ```js
   {
-    type: ADD_TODO,
-    text: 'Add New ToDo'
+    type: 'SET_USER_DATA',
+    name: 'Tanaka Taro'
   }
 ```
 
 ---
 <!-- class: default -->
-## Reduxの要素
-
-- Store
-  - アプリケーションの状態(State)を保持する場所
-  - アプリケーション内で１つ存在する。
+### Reducer
+  - ActionとStateから新しくStateを作成し返す関数
+  - 元のStateは更新しない
+  - Stateの更新内容は必ず
+```js
+import { handleActions } from 'redux-actions';
+export default handleActions({
+  [TYPE.SET_USER_DATA]: (state, action) => ({
+    ...state,
+    name: action.payload.name,
+  }),
+});
+```
 
 ---
 <!-- class: default -->
-## Reduxの要素
+### Store
+  - アプリケーションの状態(State)を保持する場所
+    - ※読み取り専用
+  - Stateにアクセス、更新を行うための関数も持っている。
 
-- State
-- Reducer
+### State
+  - アプリケーションでの状態を表す
+  - 
 
 ---
 <!-- class: default -->
 ## Reduxのデータフロー
 
 1. ユーザーがUI(View)から入力を行いActionを作成
-    - ActionCreator
-    - Action
 2. ActionをStoreへdispatch(発信)する
-    - Store
 3. dispatchされたActionとStateをReducerへ渡す
-    - State
-    - Reducer
 4. Reducerが作成した新しいStateを保存
 
 ---
